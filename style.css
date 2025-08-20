@@ -1,0 +1,172 @@
+:root {
+    --background-color: #121212;
+    --surface-color: #1E1E1E;
+    --primary-text: #E0E0E0;
+    --secondary-text: #A0A0A0;
+    --accent-color: #4DB6AC;
+    --key-background: #2C2C2C;
+    --operator-key-background: #383838;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--background-color);
+    color: var(--primary-text);
+    margin: 0;
+    -webkit-tap-highlight-color: transparent;
+    
+    /* --- LÍNEAS NUEVAS PARA CENTRAR --- */
+    display: flex; /* Convierte el body en un contenedor flexible */
+    align-items: center; /* Centra el contenido verticalmente */
+    justify-content: center; /* Centra el contenido horizontalmente */
+    height: 100vh; /* Asegura que el body ocupe el 100% de la altura de la pantalla */
+}
+
+.app-container {
+    width: 100vw;
+    height: 100vh;
+    max-width: 390px;
+    max-height: 688px;
+    background-color: var(--background-color);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    margin: auto;
+    border-radius: 40px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+}
+
+/* --- Estilos de Pestañas --- */
+.tabs {
+    display: flex;
+    justify-content: space-around;
+    background-color: var(--surface-color);
+    padding: 10px 0;
+    flex-shrink: 0; /* Evita que las pestañas se encojan */
+}
+.tab-button {
+    flex-grow: 1;
+    border: none;
+    background: none;
+    color: var(--secondary-text);
+    padding: 10px;
+    font-size: 1em;
+    font-weight: 500;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: color 0.3s, border-bottom-color 0.3s;
+}
+.tab-button.active {
+    color: var(--accent-color);
+    border-bottom-color: var(--accent-color);
+}
+
+.footer {
+    text-align: center;
+    padding: 5px 0 15px 0;
+    font-size: 0.75em;
+    flex-shrink: 0; /* Evita que el footer se encoja */
+}
+.footer a { color: var(--secondary-text); text-decoration: none; }
+
+
+/* --- Contenedores de Modo --- */
+.mode-content {
+    display: none; /* Oculto por defecto */
+    flex-direction: column;
+    flex-grow: 1; /* ¡CLAVE! Hace que este contenedor crezca y ocupe el espacio sobrante */
+    min-height: 0; /* Necesario para que flexbox funcione bien */
+    background-color: var(--surface-color);
+    border-radius: 0 0 24px 24px;
+}
+.mode-content.active {
+    display: flex; /* Visible cuando está activo */
+}
+
+/* --- Estilos de Display (reutilizables) --- */
+.display {
+    flex-grow: 1; /* ¡CLAVE! Hace que la pantalla crezca, empujando el teclado hacia abajo */
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    text-align: right;
+    word-wrap: break-word;
+    word-break: break-all;
+    min-height: 0;
+}
+.rate-info {
+    font-size: 0.9em;
+    color: var(--secondary-text);
+    margin-bottom: 10px;
+}
+.main-amount {
+    font-size: 3.5em;
+    font-weight: 500;
+}
+.converted-amount {
+    font-size: 1.5em;
+    color: var(--secondary-text);
+}
+
+/* --- Estilos de Keypad (reutilizables) --- */
+.keypad {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    padding: 20px;
+}
+.key {
+    font-size: 1.8em;
+    border: none;
+    background-color: var(--key-background);
+    color: var(--primary-text);
+    border-radius: 16px;
+    padding: 20px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.key:active { background-color: #404040; }
+.key.icon { font-size: 1.5em; }
+.key.function { color: var(--secondary-text); }
+.key.special { grid-row: span 2; background-color: var(--accent-color); color: var(--background-color); font-size: 2em; }
+.key.special:active { background-color: #80CBC4; }
+
+/* --- Ajustes para Modo Tasa Personalizada --- */
+.custom-rate-input { display: flex; align-items: center; justify-content: flex-end; }
+.custom-rate-input input {
+    background: var(--key-background);
+    border: none;
+    color: var(--primary-text);
+    font-size: 1em;
+    text-align: right;
+    width: 100px;
+    border-radius: 8px;
+    padding: 5px;
+}
+
+/* --- Ajustes para Calculadora General --- */
+.general-display { padding-bottom: 10px; }
+#general-sub-display { font-size: 1.2em; color: var(--secondary-text); height: 30px; }
+#general-main-display { font-size: 3em; }
+.general-keypad .operator { background-color: var(--operator-key-background); color: var(--accent-color); }
+.general-keypad .special { grid-row: auto; } /* Resetea el rowspan */
+
+/* --- ESTILOS RESPONSIVOS PARA PANTALLAS BAJAS --- */
+@media (max-height: 720px) {
+    .display {
+        padding: 15px 20px 5px 20px;
+        flex-grow: 0.8;
+    }
+    .main-amount { font-size: 2.8em; }
+    .converted-amount { font-size: 1.3em; }
+    .keypad { gap: 8px; padding: 15px; }
+    .key { padding: 15px; font-size: 1.6em; border-radius: 14px; }
+}
+
+@media (max-height: 500px) {
+    .main-amount { font-size: 2.2em; }
+    .converted-amount { font-size: 1.1em; }
+    .key { padding: 8px; font-size: 1.2em; border-radius: 10px; }
+    .keypad { gap: 5px; padding: 10px; }
+}

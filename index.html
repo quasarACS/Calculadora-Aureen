@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Herramientas de Aureen</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+   
+</head>
+<body>
+    <div class="app-container">
+        <nav class="tabs">
+            <button id="btn-general" class="tab-button" onclick="switchMode('general')">General</button>
+            <button id="btn-bcv" class="tab-button active" onclick="switchMode('bcv')">Tasa BCV</button>
+            <button id="btn-custom" class="tab-button" onclick="switchMode('custom')">Tasa Propia</button>
+        </nav>
+       <div class="footer">
+        <a href="https://t.me/tu_bot_username" target="_blank">Creado por Erick para Aureen AI</a>
+    </div>
+
+        <div id="bcv-mode" class="mode-content active">
+            <div class="display">
+                <div class="rate-info">Tasa Oficial BCV: <span id="bcv-rate-display">--.--</span></div>
+                <div class="main-amount"><span id="bcv-from-symbol">$</span> <span id="bcv-main-display">0</span></div>
+                <div class="converted-amount"><span id="bcv-to-symbol">Bs</span> <span id="bcv-sub-display">0,00</span></div>
+            </div>
+            <div class="keypad">
+                <button class="key" onclick="appendNumber('7', 'bcv')">7</button>
+                <button class="key" onclick="appendNumber('8', 'bcv')">8</button>
+                <button class="key" onclick="appendNumber('9', 'bcv')">9</button>
+                <button class="key icon" onclick="deleteLast('bcv')">⌫</button>
+                <button class="key" onclick="appendNumber('4', 'bcv')">4</button>
+                <button class="key" onclick="appendNumber('5', 'bcv')">5</button>
+                <button class="key" onclick="appendNumber('6', 'bcv')">6</button>
+                <button class="key function" onclick="clearAll('bcv')">C</button>
+                <button class="key" onclick="appendNumber('1', 'bcv')">1</button>
+                <button class="key" onclick="appendNumber('2', 'bcv')">2</button>
+                <button class="key" onclick="appendNumber('3', 'bcv')">3</button>
+                <button class="key icon special" onclick="swapCurrencies('bcv')" rowspan="2">⇅</button>
+                <button class="key" onclick="appendDecimal('bcv')">,</button>
+                <button class="key" onclick="appendNumber('0', 'bcv')">0</button>
+                <button class="key function" onclick="appendNumber('00', 'bcv')">00</button>
+            </div>
+        </div>
+
+        <div id="custom-mode" class="mode-content">
+             <div class="display">
+                <div class="rate-info custom-rate-input">
+                    <span>Selecciona la tasa a usar </span>
+                    <input type="number" id="custom-rate-input" placeholder="Ej: 100.00" oninput="updateDisplay('custom')">
+                </div>
+                <div class="main-amount"><span id="custom-from-symbol">$</span> <span id="custom-main-display">0</span></div>
+                <div class="converted-amount"><span id="custom-to-symbol">Bs</span> <span id="custom-sub-display">0,00</span></div>
+            </div>
+            <div class="keypad">
+                <button class="key" onclick="appendNumber('7', 'custom')">7</button>
+                <button class="key" onclick="appendNumber('8', 'custom')">8</button>
+                <button class="key" onclick="appendNumber('9', 'custom')">9</button>
+                <button class="key icon" onclick="deleteLast('custom')">⌫</button>
+                <button class="key" onclick="appendNumber('4', 'custom')">4</button>
+                <button class="key" onclick="appendNumber('5', 'custom')">5</button>
+                <button class="key" onclick="appendNumber('6', 'custom')">6</button>
+                <button class="key function" onclick="clearAll('custom')">C</button>
+                <button class="key" onclick="appendNumber('1', 'custom')">1</button>
+                <button class="key" onclick="appendNumber('2', 'custom')">2</button>
+                <button class="key" onclick="appendNumber('3', 'custom')">3</button>
+                <button class="key icon special" onclick="swapCurrencies('custom')" rowspan="2">⇅</button>
+                <button class="key" onclick="appendDecimal('custom')">,</button>
+                <button class="key" onclick="appendNumber('0', 'custom')">0</button>
+                <button class="key function" onclick="appendNumber('00', 'custom')">00</button>
+            </div>
+        </div>
+
+        <div id="general-mode" class="mode-content">
+            <div class="display general-display">
+                <div id="general-sub-display"></div>
+                <div id="general-main-display">0</div>
+            </div>
+            <div class="keypad general-keypad">
+                 <button class="key function" onclick="clearAll('general')">C</button>
+                 <button class="key function" onclick="chooseOperation('^')">xʸ</button>
+                 <button class="key function" onclick="chooseOperation('%')">%</button>
+                 <button class="key function operator" onclick="chooseOperation('÷')">÷</button>
+
+                 <button class="key" onclick="appendNumber('7', 'general')">7</button>
+                 <button class="key" onclick="appendNumber('8', 'general')">8</button>
+                 <button class="key" onclick="appendNumber('9', 'general')">9</button>
+                 <button class="key function operator" onclick="chooseOperation('×')">×</button>
+                 
+                 <button class="key" onclick="appendNumber('4', 'general')">4</button>
+                 <button class="key" onclick="appendNumber('5', 'general')">5</button>
+                 <button class="key" onclick="appendNumber('6', 'general')">6</button>
+                 <button class="key function operator" onclick="chooseOperation('-')">−</button>
+
+                 <button class="key" onclick="appendNumber('1', 'general')">1</button>
+                 <button class="key" onclick="appendNumber('2', 'general')">2</button>
+                 <button class="key" onclick="appendNumber('3', 'general')">3</button>
+                 <button class="key function operator" onclick="chooseOperation('+')">+</button>
+                 
+                 <button class="key" onclick="appendNumber('0', 'general')">0</button>
+                 <button class="key" onclick="appendDecimal('general')">,</button>
+                 <button class="key icon" onclick="deleteLast('general')">⌫</button>
+                 <button class="key special" onclick="calculate()">=</button>
+            </div>
+        </div>
+        
+            </div>
+    <script src="script.js"></script>
+</body>
+</html>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
