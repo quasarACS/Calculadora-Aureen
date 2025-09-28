@@ -62,12 +62,19 @@ body {
 }
 
 .footer {
-    text-align: center;
-    padding: 5px 0 15px 0;
+    height: 40px;              /* Le damos una altura fija a la barra */
+    display: flex;             /* Activamos el modo de centrado */
+    justify-content: center;   /* Centra de izquierda a derecha */
+    align-items: center;       /* Centra de arriba a abajo */
     font-size: 0.75em;
-    flex-shrink: 0; /* Evita que el footer se encoja */
+    flex-shrink: 0;
+    /* Hemos quitado el padding que causaba el conflicto */
 }
-.footer a { color: var(--secondary-text); text-decoration: none; }
+
+.footer a {
+    color: var(--secondary-text);
+    text-decoration: none;
+}
 
 
 /* --- Contenedores de Modo --- */
