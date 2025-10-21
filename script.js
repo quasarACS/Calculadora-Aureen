@@ -3,7 +3,7 @@
 let state = {
     bcv: { rate: 0, currentInput: "0", isFromUSD: true },
     custom: { rate: 0, currentInput: "0", isFromUSD: true },
-    general: { currentInput: "0", previousInput: "", operation: null }
+    general: { currentInput: "0", previousInput: "", operation: null, history: [] }
 };
 let currentMode = 'bcv';
 
@@ -61,6 +61,19 @@ async function fetchBCVRate() {
 // --- INICIALIZACIÓN ---
 window.onload = function() {
     try { Telegram.WebApp.ready(); } catch (e) { console.log("Modo de prueba local."); }
+
+    // Aplicar el tema guardado al cargar
+    const savedTheme = localStorage.getItem('aureen-calc-theme') || 'dark';
+    if (savedTheme === 'light') {
+        document.body.setAttribute('data-theme', 'light');
+        document.getElementById('theme-toggle').checked = true;
+    } else {
+        document.body.removeAttribute('data-theme');
+        document.getElementById('theme-toggle').checked = false;
+    }
+    // Cargar el historial guardado
+    state.general.history = JSON.parse(localStorage.getItem('aureen-calc-history')) || []; // <-- AÑADE ESTA LÍNEA
+
     fetchBCVRate();
     updateDisplay('custom');
     updateDisplay('general');
@@ -68,6 +81,7 @@ window.onload = function() {
 
 // --- El resto del script.js (las funciones de la calculadora) permanece igual ---
 function switchMode(mode) {
+    document.getElementById('options-menu').classList.remove('show'); // <-- AÑADE ESTA LÍNEA
     currentMode = mode;
     document.querySelectorAll('.mode-content').forEach(el => el.classList.remove('active'));
     document.getElementById(`${mode}-mode`).classList.add('active');
@@ -153,8 +167,10 @@ function calculate() {
     let result;
     const prev = parseFloat(state.general.previousInput.replace(',', '.'));
     const current = parseFloat(state.general.currentInput.replace(',', '.'));
+    const op = state.general.operation; // <-- Guardamos la operación
     if(isNaN(prev) || isNaN(current)) return;
-    switch(state.general.operation) {
+
+    switch(op) { // <-- Usamos la variable 'op'
         case '+': result = prev + current; break;
         case '-': result = prev - current; break;
         case '×': result = prev * current; break;
@@ -163,8 +179,70 @@ function calculate() {
         case '%': result = (prev / 100) * current; break;
         default: return;
     }
-    state.general.currentInput = result.toLocaleString('es-VE', { useGrouping: false }).replace('.', ',');
+
+    // Formatear resultado para mostrar
+    const resultString = result.toLocaleString('es-VE', { useGrouping: false, maximumFractionDigits: 10 }).replace('.', ',');
+
+    // --- INICIO DE CÓDIGO AÑADIDO ---
+    // Crear el objeto de historial
+    const historyEntry = {
+        operation: `${state.general.previousInput} ${op} ${state.general.currentInput}`,
+        result: resultString
+    };
+    // Añadirlo al principio del array (para que lo nuevo esté arriba)
+    state.general.history.unshift(historyEntry);
+    // Guardar en localStorage
+    localStorage.setItem('aureen-calc-history', JSON.stringify(state.general.history));
+    // --- FIN DE CÓDIGO AÑADIDO ---
+
+    state.general.currentInput = resultString; // <-- Usamos la variable
     state.general.operation = null;
     state.general.previousInput = '';
     updateDisplay('general');
 }
+// --- FUNCIONALIDAD DEL MENÚ DE OPCIONES ---
+
+// Función para mostrar/ocultar el menú dropdown
+function toggleOptionsMenu() {
+    document.getElementById('options-menu').classList.toggle('show');
+}
+
+// Función para mostrar una pantalla modal
+function showModal(modalId) {
+    document.getElementById(modalId).classList.add('show');
+    // Cerramos el menú dropdown al seleccionar una opción
+    document.getElementById('options-menu').classList.remove('show');
+}
+
+// Función para cerrar una pantalla modal
+function closeModal(modalId) {
+    document.getElementById(modalId).classList.remove('show');
+}
+
+// --- FUNCIONALIDAD DE TEMA (MODO CLARO/OSCURO) ---
+
+function toggleTheme() {
+    const toggle = document.getElementById('theme-toggle');
+    if (toggle.checked) {
+        // Si está marcado, es modo claro
+        document.body.setAttribute('data-theme', 'light');
+        localStorage.setItem('aureen-calc-theme', 'light');
+    } else {
+        // Si no, es modo oscuro
+        document.body.removeAttribute('data-theme');
+        localStorage.setItem('aureen-calc-theme', 'dark');
+    }
+}
+
+// --- CERRAR MENÚ AL HACER CLIC AFUERA ---
+window.addEventListener('click', function(event) {
+    const menu = document.getElementById('options-menu');
+    const menuButton = document.getElementById('options-menu-btn');
+    
+    // Verifica si se hizo clic fuera del menú y fuera del botón
+    if (event.target && !menu.contains(event.target) && !menuButton.contains(event.target)) {
+        if (menu.classList.contains('show')) {
+            menu.classList.remove('show');
+        }
+    }
+});
