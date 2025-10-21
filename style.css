@@ -3,9 +3,20 @@
     --surface-color: #1E1E1E;
     --primary-text: #E0E0E0;
     --secondary-text: #A0A0A0;
-    --accent-color: #4DB6AC;
+    --accent-color: #42A5F5;
     --key-background: #2C2C2C;
     --operator-key-background: #383838;
+}
+
+/* Tema Claro */
+body[data-theme="light"] {
+    --background-color: #F0F2F5; /* Un gris muy claro */
+    --surface-color: #FFFFFF; /* Blanco puro */
+    --primary-text: #1C1C1E; /* Casi negro */
+    --secondary-text: #6E6E73; /* Gris medio */
+    --accent-color: #007AFF; /* Un azul más estándar */
+    --key-background: #E5E5EA; /* Gris claro para teclas */
+    --operator-key-background: #DCDCE0; /* Gris un poco más oscuro */
 }
 
 body {
@@ -23,6 +34,7 @@ body {
 }
 
 .app-container {
+    position: relative; /* <-- AÑADE ESTA LÍNEA */
     width: 100vw;
     height: 100vh;
     max-width: 390px;
@@ -36,46 +48,96 @@ body {
     box-shadow: 0 10px 40px rgba(0,0,0,0.4);
 }
 
-/* --- Estilos de Pestañas --- */
+/* --- Estilos de Pestañas (Material Design 3 - Expressive) --- */
 .tabs {
     display: flex;
     justify-content: space-around;
-    background-color: var(--surface-color);
-    padding: 10px 0;
-    flex-shrink: 0; /* Evita que las pestañas se encojan */
+    align-items: center;
+    background-color: var(--background-color);
+    height: 80px; /* Altura estándar de MD3 para Bottom Nav */
+    flex-shrink: 0;
+    border-top: 1px solid var(--operator-key-background); /* Línea sutil de separación */
+    padding: 0 8px;
 }
+
 .tab-button {
     flex-grow: 1;
+    display: flex;
+    flex-direction: column; /* Apila el icono y el texto verticalmente */
+    align-items: center;
+    justify-content: center;
     border: none;
     background: none;
-    color: var(--secondary-text);
-    padding: 10px;
-    font-size: 1em;
-    font-weight: 500;
+    color: var(--secondary-text); 
     cursor: pointer;
-    border-bottom: 2px solid transparent;
-    transition: color 0.3s, border-bottom-color 0.3s;
-}
-.tab-button.active {
-    color: var(--accent-color);
-    border-bottom-color: var(--accent-color);
-}
-
-.footer {
-    height: 40px;              /* Le damos una altura fija a la barra */
-    display: flex;             /* Activamos el modo de centrado */
-    justify-content: center;   /* Centra de izquierda a derecha */
-    align-items: center;       /* Centra de arriba a abajo */
-    font-size: 0.60em;
-    flex-shrink: 0;
-    /* Hemos quitado el padding que causaba el conflicto */
+    height: 100%;
+    border-radius: 12px;
+    transition: background-color 0.3s ease;
+    /* Quitamos el borde inferior de las pestañas antiguas */
+    border-bottom: none; 
 }
 
-.footer a {
+.tab-button:active {
+    background-color: var(--key-background); /* Feedback al presionar */
+}
+
+.tab-icon-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Forma "expresiva" - un poco más alta y angosta */
+    width: 60px; 
+    height: 36px;
+    border-radius: 18px; /* Mitad de la altura */
+    background-color: transparent;
+    transition: background-color 0.3s ease;
+    margin-bottom: 2px;
+}
+
+.tab-button svg {
+    width: 24px;
+    height: 24px;
+    fill: var(--secondary-text); /* Color inactivo */
+    transition: fill 0.3s ease;
+}
+
+/* --- LÓGICA DE ICONOS --- */
+/* Oculta el icono relleno por defecto */
+.tab-button .icon-filled {
+    display: none; 
+}
+/* Muestra el icono de contorno por defecto */
+.tab-button .icon-outlined {
+    display: block; 
+}
+
+.tab-label {
+    font-size: 0.8em; 
     color: var(--secondary-text);
-    text-decoration: none;
+    font-weight: 500; /* Peso normal para inactivo */
+    transition: color 0.3s ease, font-weight 0.3s ease;
 }
 
+/* --- ESTADO ACTIVO (Expressive) --- */
+.tab-button.active .tab-icon-wrap {
+    background-color: var(--operator-key-background); /* Fondo de la píldora activa */
+}
+
+.tab-button.active .tab-label {
+    color: var(--primary-text); /* Color de texto activo */
+    font-weight: 700; /* ¡CLAVE EXPRESIVA: Texto en negrita! */
+}
+
+/* Muestra el icono relleno cuando está activo */
+.tab-button.active .icon-filled {
+    display: block; 
+    fill: var(--accent-color); /* Color de acento para el icono */
+}
+
+/* Oculta el icono de contorno cuando está activo */
+.tab-button.active .icon-outlined {
+    display: none; 
+}
 
 /* --- Contenedores de Modo --- */
 .mode-content {
@@ -84,7 +146,7 @@ body {
     flex-grow: 1; /* ¡CLAVE! Hace que este contenedor crezca y ocupe el espacio sobrante */
     min-height: 0; /* Necesario para que flexbox funcione bien */
     background-color: var(--surface-color);
-    border-radius: 0 0 24px 24px;
+    border-radius: 0;
 }
 .mode-content.active {
     display: flex; /* Visible cuando está activo */
@@ -140,7 +202,7 @@ body {
 .key.special:active { background-color: #80CBC4; }
 
 /* --- Ajustes para Modo Tasa Personalizada --- */
-.custom-rate-input { display: flex; align-items: center; justify-content: flex-end; }
+.custom-rate-input { display: flex; align-items: center; justify-content: flex-end; gap: 8px; /* <-- AÑADE ESTA LÍNEA */ }
 .custom-rate-input input {
     background: var(--key-background);
     border: none;
@@ -177,6 +239,289 @@ body {
     .key { padding: 8px; font-size: 1.2em; border-radius: 10px; }
     .keypad { gap: 5px; padding: 10px; }
 }
+/* --- ESTILOS DE HEADER Y MENÚ DE OPCIONES --- */
+.app-header {
+    display: flex;
+    justify-content: space-between; /* <-- ¡LÍNEA MODIFICADA! */
+    align-items: center;
+    height: 56px; /* Altura estándar para app bars */
+    padding: 0 12px;
+    flex-shrink: 0;
+    /* Usamos el mismo fondo que los paneles de modo */
+    background-color: var(--surface-color); 
+}
 
+/* Espaciador izquierdo para centrar el título */
+.header-left {
+    width: 40px; /* Debe tener el mismo ancho que el botón de menú */
+}
+
+.app-title {
+    font-family: 'Lobster', cursive; /* <-- AÑADE ESTA LÍNEA */
+    font-size: 1.6em; /* <-- AUMENTAMOS UN POCO EL TAMAÑO */
+    font-weight: 400; /* Las fuentes script no suelen necesitar "negrita" */
+    color: var(--primary-text);
+    margin: 0; 
+}
+
+.header-right {
+    position: relative; /* Para anclar el menú dropdown */
+}
+
+.menu-button {
+    background: none;
+    border: none;
+    padding: 8px;
+    border-radius: 50%;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+}
+
+.menu-button:active {
+    background-color: var(--key-background);
+}
+
+.menu-button svg {
+    fill: var(--secondary-text);
+}
+
+/* --- Estilos del Menú Dropdown --- */
+.options-menu-dropdown {
+    display: none; /* Oculto por defecto */
+    position: absolute;
+    top: 56px; /* Justo debajo del header */
+    right: 12px; /* Alineado con el botón */
+    background-color: var(--key-background);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    z-index: 1000;
+    width: 240px;
+    overflow: hidden;
+}
+
+.options-menu-dropdown.show {
+    display: block;
+}
+
+.options-menu-dropdown button {
+    display: flex;
+    align-items: center;
+    gap: 16px; /* Espacio entre icono y texto */
+    width: 100%;
+    background: none;
+    border: none;
+    color: var(--primary-text);
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+.options-menu-dropdown button:hover {
+    background-color: var(--operator-key-background);
+}
+
+.options-menu-dropdown button svg {
+    fill: var(--secondary-text);
+}
+
+/* --- ESTILOS DE PANTALLAS MODALES --- */
+.modal-screen {
+    /* Oculto y fuera de la pantalla por defecto */
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--background-color); /* Fondo sólido */
+    z-index: 2000; /* Por encima de todo */
+    flex-direction: column;
+    transform: translateX(100%); /* Empieza fuera a la derecha */
+    transition: transform 0.3s ease-out;
+}
+
+.modal-screen.show {
+    display: flex;
+    transform: translateX(0); /* Entra a la pantalla */
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    height: 56px;
+    padding: 0 12px;
+    flex-shrink: 0;
+    border-bottom: 1px solid var(--operator-key-background);
+}
+
+.modal-close-btn {
+    background: none;
+    border: none;
+    padding: 8px;
+    border-radius: 50%;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-close-btn svg {
+    fill: var(--secondary-text);
+}
+
+.modal-title {
+    font-size: 1.25em;
+    font-weight: 500;
+    margin: 0;
+    padding-left: 16px;
+    color: var(--primary-text);
+}
+
+.modal-content {
+    padding: 20px;
+    flex-grow: 1;
+    overflow-y: auto;
+    font-size: 1.1em;
+    line-height: 1.6;
+    color: var(--primary-text);
+}
+
+.modal-content p {
+    margin: 0 0 1em 0;
+    color: var(--secondary-text);
+}
+
+.modal-content p strong {
+    color: var(--primary-text);
+}
+/* --- ESTILOS DE MODO DE VISUALIZACIÓN --- */
+.setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 0;
+}
+
+.setting-item span {
+    font-size: 1.1em;
+    color: var(--primary-text);
+}
+
+.theme-labels {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 8px;
+    font-size: 0.9em;
+    color: var(--secondary-text);
+}
+
+/* El Toggle Switch */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 28px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--key-background);
+    transition: .4s;
+    border-radius: 28px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 4px;
+    bottom: 4px;
+    background-color: var(--secondary-text);
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: var(--accent-color);
+}
+
+input:checked + .slider:before {
+    transform: translateX(22px);
+    background-color: var(--surface-color);
+}
+/* --- ESTILOS DE HISTORIAL --- */
+
+/* Botón de "Borrar" en el header modal */
+.modal-action-btn {
+    background: none;
+    border: none;
+    color: var(--accent-color); /* Usa tu color de acento */
+    font-size: 1em;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 8px;
+    margin-left: auto; /* <-- Esto lo empuja a la derecha */
+    margin-right: 8px;
+    transition: background-color 0.2s;
+}
+
+.modal-action-btn:active {
+    background-color: var(--key-background);
+}
+
+/* Contenedor del historial */
+#history-content-area {
+    padding: 0; /* Quitamos padding para que los items ocupen todo */
+}
+
+/* Mensaje de historial vacío */
+.history-empty-message {
+    padding: 20px;
+    text-align: center;
+    color: var(--secondary-text);
+    font-size: 1.1em;
+}
+
+/* Cada item de la lista del historial */
+.history-item {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--operator-key-background);
+    text-align: right;
+}
+
+.history-item .operation {
+    display: block; /* La operación (2+2) */
+    color: var(--secondary-text);
+    font-size: 0.9em;
+    margin-bottom: 4px;
+}
+
+.history-item .result {
+    display: block; /* El resultado (= 4) */
+    color: var(--primary-text);
+    font-size: 1.4em;
+    font-weight: 500;
+}
 
 
