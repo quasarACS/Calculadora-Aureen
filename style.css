@@ -523,3 +523,48 @@ input:checked + .slider:before {
     font-size: 1.4em;
     font-weight: 500;
 }
+/* --- ESTILOS DEL POPUP DE INSTALACIÓN --- */
+.install-instructions p {
+    margin-bottom: 12px;
+}
+
+.install-instructions .install-section-title {
+    font-weight: 500;
+    color: var(--primary-text);
+    margin-top: 20px;
+    margin-bottom: 8px;
+}
+
+.install-instructions ol {
+    margin: 0;
+    padding-left: 24px;
+}
+
+.install-instructions li {
+    margin-bottom: 8px;
+    color: var(--secondary-text);
+}
+
+.install-instructions li strong {
+    color: var(--primary-text);
+}
+/* --- ESTILO DEL BOTÓN DE INSTALACIÓN PWA --- */
+.install-pwa-button {
+    display: none; /* Oculto por defecto, JS lo mostrará */
+    width: 100%;
+    padding: 14px;
+    font-size: 1.1em;
+    font-weight: 500;
+    color: #FFFFFF; /* Texto blanco */
+    background-color: var(--accent-color); /* Tu color azul */
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    margin-bottom: 24px; /* Espacio antes de las instrucciones */
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.install-pwa-button:active {
+    transform: scale(0.98);
+    background-color: #3498db; /* Un azul un poco más claro al presionar */
+}
