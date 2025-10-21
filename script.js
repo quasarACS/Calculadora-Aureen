@@ -90,6 +90,17 @@ window.onload = function() {
         showModal('install-pwa-modal');
     }, 2000);
     // --- FIN DE CÓDIGO AÑADIDO ---
+    // --- CÓDIGO AÑADIDO PARA REGISTRAR EL SERVICE WORKER ---
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js')
+            .then(registration => {
+                console.log('Service Worker registrado con éxito:', registration);
+            })
+            .catch(error => {
+                console.log('Error al registrar Service Worker:', error);
+            });
+    }
+    // --- FIN DE CÓDIGO AÑADIDO ---
     }
     // Cargar el historial guardado
     state.general.history = JSON.parse(localStorage.getItem('aureen-calc-history')) || []; // <-- AÑADE ESTA LÍNEA
