@@ -1,3 +1,17 @@
+let deferredInstallPrompt = null; // Variable para guardar el evento de instalación
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    // El navegador nos dice que la app es instalable (solo en Android/Chrome)
+    e.preventDefault(); // Prevenimos que el navegador muestre su propio mini-popup
+    deferredInstallPrompt = e; // Guardamos el evento
+    
+    // Mostramos nuestro botón personalizado
+    const installBtn = document.getElementById('install-pwa-btn');
+    if (installBtn) {
+        installBtn.style.display = 'block';
+    }
+});
+
 // --- ESTADO GLOBAL Y CONFIGURACIÓN ---
 // Aseguramos que 'state' se declare una sola vez.
 let state = {
@@ -70,6 +84,12 @@ window.onload = function() {
     } else {
         document.body.removeAttribute('data-theme');
         document.getElementById('theme-toggle').checked = false;
+        // --- CÓDIGO AÑADIDO PARA EL POPUP ---
+    // Muestra el popup de instalación después de 2 segundos
+    setTimeout(() => {
+        showModal('install-pwa-modal');
+    }, 2000);
+    // --- FIN DE CÓDIGO AÑADIDO ---
     }
     // Cargar el historial guardado
     state.general.history = JSON.parse(localStorage.getItem('aureen-calc-history')) || []; // <-- AÑADE ESTA LÍNEA
@@ -215,8 +235,9 @@ function showModal(modalId) {
 }
 
 // Función para cerrar una pantalla modal
-function closeModal(modalId) {
+function closeModal(modalId) { // <-- CAMBIADO
     document.getElementById(modalId).classList.remove('show');
+    // Ya no hay más lógica aquí
 }
 
 // --- FUNCIONALIDAD DE TEMA (MODO CLARO/OSCURO) ---
@@ -246,3 +267,12 @@ window.addEventListener('click', function(event) {
         }
     }
 });
+// Función que dispara el prompt de instalación (solo si existe)
+function triggerInstallPrompt() {
+    if (!deferredInstallPrompt) {
+        // Esto no debería pasar si el botón es visible, pero por seguridad
+        return;
+    }
+    // Muestra el diálogo de instalación del navegador
+    deferredInstallPrompt.prompt();
+}
