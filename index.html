@@ -6,18 +6,37 @@
     <title>Calculadora Aureen</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
    
 </head>
 <body>
     <div class="app-container">
-        <nav class="tabs">
-            <button id="btn-general" class="tab-button" onclick="switchMode('general')">General</button>
-            <button id="btn-bcv" class="tab-button active" onclick="switchMode('bcv')">Tasa BCV</button>
-            <button id="btn-custom" class="tab-button" onclick="switchMode('custom')">Tasa Propia</button>
-        </nav>
+
+        <div class="app-header">
+    <div class="header-left">
+        </div> 
+
+    <h1 class="app-title">Aureen Calc</h1>
+    <div class="header-right">
+        <button class="menu-button" id="options-menu-btn" onclick="toggleOptionsMenu()">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <div id="options-menu" class="options-menu-dropdown">
+        <button onclick="showModal('settings-screen')">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.82.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/></svg>
+            Modo de visualización
+        </button>
+        <button onclick="showModal('about-screen')">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+            Acerca de
+        </button>
+    </div>
+        
 
         <div id="bcv-mode" class="mode-content active">
             <div class="display">
@@ -104,9 +123,82 @@
                  <button class="key special" onclick="calculate()">=</button>
             </div>
         </div>
-        <div class="footer">
-        <a href="https://t.me/AureenAIbot" target="_blank">Creado por Erick para el Proyecto | Aureen AI</a>
+        <div id="settings-screen" class="modal-screen">
+        <div class="modal-header">
+            <button class="modal-close-btn" onclick="closeModal('settings-screen')">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+            </button>
+            <h2 class="modal-title">Modo de visualización</h2>
+        </div>
+        <div class="modal-content">
+            <div class="setting-item">
+    <span>Tema de la aplicación</span>
+    <label class="toggle-switch">
+        <input type="checkbox" id="theme-toggle" onclick="toggleTheme()">
+        <span class="slider"></span>
+    </label>
+</div>
+<div class="theme-labels">
+    <span>Claro ☀️</span>
+    <span>Oscuro 🌙</span>
+</div>
+        </div>
     </div>
+
+    <div id="history-screen" class="modal-screen">
+    <div class="modal-header">
+        <button class="modal-close-btn" onclick="closeModal('history-screen')">
+            <svg>...</svg>
+        </button>
+        <h2 class="modal-title">Historial</h2>
+
+        <button class="modal-action-btn" id="clear-history-btn" onclick="clearHistory()">
+            Borrar
+        </button>
+        </div>
+    <div class="modal-content" id="history-content-area"> <p class="history-empty-message">No hay cálculos guardados.</p>
+    </div>
+</div>
+
+    <div id="about-screen" class="modal-screen">
+        <div class="modal-header">
+            <button class="modal-close-btn" onclick="closeModal('about-screen')">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+            </button>
+            <h2 class="modal-title">Acerca de</h2>
+        </div>
+        <div class="modal-content">
+            <p><strong>Calculadora Aureen</strong></p>
+            <p>Creada por Erick Manrique para el Proyecto Aureen AI.</p>
+            <br>
+            <p><strong>Versión:</strong> 1.0.0 (MD3)</p>
+        </div>
+    </div>
+        <nav class="tabs">
+    <button id="btn-general" class="tab-button" onclick="switchMode('general')">
+        <span class="tab-icon-wrap">
+            <svg class="icon-filled" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-4 14h-2v-2h2v2zm0-4h-2v-2h2v2zm-4 4H9v-2h2v2zm0-4H9v-2h2v2zm-4 4H5v-2h2v2zm0-4H5v-2h2v2zm8-4h-2V7h2v2zm0-4h-2V5h2v2zm-4 2H9V7h2v2zm0-4H9V5h2v2zm-4 2H5V7h2v2zm0-4H5V5h2v2z"/></svg>
+            <svg class="icon-outlined" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 15h2v2H7zm0-4h2v2H7zm4 4h2v2H11zm0-4h2v2H11zm4 4h2v2H15zm0-4h2v2H15zM7 7h2v2H7zm4 0h2v2H11zm4 0h2v2H15z"/></svg>
+        </span>
+        <span class="tab-label">General</span>
+    </button>
+    
+    <button id="btn-bcv" class="tab-button active" onclick="switchMode('bcv')">
+        <span class="tab-icon-wrap">
+            <svg class="icon-filled" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M4 10v7h3v-7H4zm6 0v7h3v-7h-3zm6 0v7h3v-7h-3zM10 5l-6 5h12l-6-5z"/></svg>
+            <svg class="icon-outlined" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M6.5 10h-2v7h2v-7zM12.5 10h-2v7h2v-7zM21 10h-2v7h2v-7zM3 8v11c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8H3zm15 11H6V10h12v9zM10 3L3 8h18L10 3z"/></svg>
+        </span>
+        <span class="tab-label">Tasa BCV</span>
+    </button>
+    
+    <button id="btn-custom" class="tab-button" onclick="switchMode('custom')">
+        <span class="tab-icon-wrap">
+            <svg class="icon-filled" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12.65 10C11.83 7.67 9.61 6 7 6c-3.31 0-6 2.69-6 6s2.69 6 6 6c2.61 0 4.83-1.67 5.65-4H17v4h4v-4h2v-4H12.65zM7 14c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg>
+            <svg class="icon-outlined" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12.65 10H11V8h2v1.35C12.83 9.23 12.65 9.12 12.45 9H11v1h1.65z" opacity=".3"/><path d="M7 6c-3.31 0-6 2.69-6 6s2.69 6 6 6c2.61 0 4.83-1.67 5.65-4H17v4h4v-4h2v-4H12.65C11.83 7.67 9.61 6 7 6zm0 10c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm6.65-6H11V8h2v1.35c.19.07.37.18.55.3V8h2v1h-1.45c.18.32.35.66.5 1H17v2h-1.65c-.15.34-.32.68-.5 1H17v2h-2v-1.35c-.19-.07-.37-.18-.55-.3V16h-2v-1h1.45c-.18-.32-.35-.66-.5-1H11v-2h2.65z"/></svg>
+        </span>
+        <span class="tab-label">Personalizado</span>
+    </button>
+</nav>
             </div>
     <script src="script.js"></script>
 </body>
@@ -116,6 +208,7 @@
 </body>
 
 </html>
+
 
 
 
