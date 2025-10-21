@@ -169,9 +169,36 @@
         </div>
         <div class="modal-content">
             <p><strong>Calculadora Aureen</strong></p>
-            <p>Creada por Erick Manrique para el Proyecto Aureen AI.</p>
+            <p>Proyecto de Calculo creado por Erick Manrique como complemento para el Proyecto Aureen AI el cual es accesible mediante el enlace: https://www.t.me/aureenAIbot .</p>
             <br>
             <p><strong>Versión:</strong> 1.0.0 (MD3)</p>
+        </div>
+    </div>
+    <div id="install-pwa-modal" class="modal-screen">
+        <div class="modal-header">
+            <button class="modal-close-btn" onclick="closeModal('install-pwa-modal')">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+            </button>
+            <h2 class="modal-title">¡Instala la App!</h2>
+        </div>
+        <div class="modal-content install-instructions">
+            <button id="install-pwa-btn" class="install-pwa-button" onclick="triggerInstallPrompt()">
+        Instalar Aplicación
+    </button>
+    <p>Añade la Calculadora Aureen a tu pantalla de inicio...</p>
+            <p>Añade la Calculadora Aureen a tu pantalla de inicio para un acceso rápido y sin conexión.</p>
+            
+            <p class="install-section-title">En Android (Chrome):</p>
+            <ol>
+                <li>Toca el menú de <strong>3 puntos (⋮)</strong> en la esquina.</li>
+                <li>Selecciona <strong>"Instalar aplicación"</strong> o "Agregar a pantalla de inicio".</li>
+            </ol>
+            
+            <p class="install-section-title">En iOS (Safari):</p>
+            <ol>
+                <li>Toca el ícono de <strong>Compartir</strong> (un cuadro con una flecha hacia arriba).</li>
+                <li>Desliza y selecciona <strong>"Agregar a la pantalla de inicio"</strong>.</li>
+            </ol>
         </div>
     </div>
         <nav class="tabs">
@@ -196,7 +223,7 @@
             <svg class="icon-filled" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12.65 10C11.83 7.67 9.61 6 7 6c-3.31 0-6 2.69-6 6s2.69 6 6 6c2.61 0 4.83-1.67 5.65-4H17v4h4v-4h2v-4H12.65zM7 14c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg>
             <svg class="icon-outlined" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12.65 10H11V8h2v1.35C12.83 9.23 12.65 9.12 12.45 9H11v1h1.65z" opacity=".3"/><path d="M7 6c-3.31 0-6 2.69-6 6s2.69 6 6 6c2.61 0 4.83-1.67 5.65-4H17v4h4v-4h2v-4H12.65C11.83 7.67 9.61 6 7 6zm0 10c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm6.65-6H11V8h2v1.35c.19.07.37.18.55.3V8h2v1h-1.45c.18.32.35.66.5 1H17v2h-1.65c-.15.34-.32.68-.5 1H17v2h-2v-1.35c-.19-.07-.37-.18-.55-.3V16h-2v-1h1.45c-.18-.32-.35-.66-.5-1H11v-2h2.65z"/></svg>
         </span>
-        <span class="tab-label">Personalizado</span>
+        <span class="tab-label">Perso</span>
     </button>
 </nav>
             </div>
